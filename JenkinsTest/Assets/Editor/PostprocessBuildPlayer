@@ -1,0 +1,22 @@
+#!/usr/bin/python
+
+import sys
+import shutil
+import glob
+import os
+import fnmatch
+
+from mod_pbxproj import XcodeProject
+
+XcodePath = sys.argv[2]
+XcodeFrameworksPath = '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/'
+#XcodeFrameworksPath = XcodePath + '/System/Library/Frameworks/'
+
+projectPath = sys.argv[1]
+project = XcodeProject.Load(projectPath + '/Unity-iPhone.xcodeproj/project.pbxproj')
+project.add_file_if_doesnt_exist(XcodeFrameworksPath + 'Security.framework', tree='SDKROOT/Unity-iPhone/Frameworks')
+project.add_file_if_doesnt_exist(XcodeFrameworksPath + 'Social.framework', tree='SDKROOT/Unity-iPhone/Frameworks')
+project.add_file_if_doesnt_exist(XcodeFrameworksPath + 'AdSupport.framework', tree='SDKROOT/Unity-iPhone/Frameworks')
+#project.add_file_if_doesnt_exist(XcodeFrameworksPath + 'AdSupport.framework', tree='SDKROOT',create_build_files=True,weak=True);
+
+project.saveFormat3_2()
